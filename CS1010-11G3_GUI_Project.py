@@ -200,10 +200,13 @@ mWin.mainloop()
 ''' 
 
 To do (feel free to add stuff):
-* Fix Ace not turning to 1 if over 21
-* Fix you can get more than 4 of the same card
+* Bet mechanic
+* Change bet in between rounds
+* Double down
+* Two hands
+* Multiplayer
 * 
-* 
+*
 * 
 
 Make it look good (important):
@@ -218,15 +221,6 @@ Make it look good (important):
 Bugs(If you find any put here):
 * If you have an Ace and you hit, and go over 21, it wont turn to 1
 * You can get more than 4 of the same card
-*
-*
-
-Other stuff (maybe):
-* Add Slots 
-* Add Crash 
-* Add Poker
-* Roulette
-*
 *
 *
 
