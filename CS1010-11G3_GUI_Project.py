@@ -200,13 +200,8 @@ mWin.mainloop()
 ''' 
 
 To do (feel free to add stuff):
-* Make it so you can play multiple rounds
-* Fix Button giving infinite cards
-* Add dealer to play against
-* Add bet mechanic
 * Fix Ace not turning to 1 if over 21
 * Fix you can get more than 4 of the same card
-* Change colours
 * 
 * 
 * 
