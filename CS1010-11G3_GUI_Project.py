@@ -29,6 +29,8 @@ cards = [] # Player's Hand
 dCards = [] # Dealer's Hand
 dT = 0 # Dealer's Total
 
+chips = tk.IntVar # Total money player put in
+
 def gC(): # gets 1 card and puts it into the cards list
     global cards
     global cT
@@ -68,14 +70,25 @@ def dlrCard(): # Gives dealer 1 card and puts in hand
 def stand(): # Ends Round
     global cT
     global dT
+    global bet
+    global chips
 
     dealerPlay()
-    if dT == 0:
+    if cT > 21: # If the cards add up to more than 21 you lose
+        totalLbl.config(text='Bust!')
+        cardLbl.config(text=(f'Cards: {cards}'))
+        winLbl.config(text='You Lost.')
+        hitBtn.config(state=tk.DISABLED)
+        dCardsLbl.config(text=(f"Dealer's Cards: {dCards}"))
+        dTotalLbl.config(text=(f"Dealer's Total: {dT}"))    
+    elif dT == 0: # If the dealer busted you win
         totalLbl.config(text=(f'Total: {cT}'))
         cardLbl.config(text=(f'Cards: {cards}'))
         winLbl.config(text='You Win!')
         hitBtn.config(state=tk.DISABLED)
         dTotalLbl.config(text="Dealer's Total: Bust!")
+        chips += bet*2
+        monLbl.config(text=(f"'Chips': {chips}"))
     elif cT < dT: # If the dealer has more you lose
         totalLbl.config(text=(f'Total: {cT}'))
         cardLbl.config(text=(f'Cards: {cards}'))
@@ -91,26 +104,30 @@ def stand(): # Ends Round
         hitBtn.config(state=tk.DISABLED)
         if cT == 21: # If the cards add up to 21 its a win
             winLbl.config(text='You Win!')
+            chips += bet*2
+            monLbl.config(text=(f"'Chips': {chips}"))
         elif cT > dT: # If your card's are more than the dealer you win
             winLbl.config(text='You Win!')
+            chips += bet*2
+            monLbl.config(text=(f"'Chips': {chips}"))
         elif cT == dT:
             winLbl.config(text="It's a tie!")
-    if cT > 21: # If the cards add up to more than 21 you lose
-        totalLbl.config(text='Bust!')
-        cardLbl.config(text=(f'Cards: {cards}'))
-        winLbl.config(text='You Lost.')
-        hitBtn.config(state=tk.DISABLED)
-        dCardsLbl.config(text=(f"Dealer's Cards: {dCards}"))
-        dTotalLbl.config(text=(f"Dealer's Total: {dT}"))    
+            chips += bet
+            monLbl.config(text=(f"'Chips': {chips}"))
 
 def hit(): # Gives dealer and player 2 cards then 1 card to player
     global cards
     global cT
+    global chips
+    global bet
 
-    if len(cards) == 0: # Gives 2 Cards first hit
+    if len(cards) == 0: # Gives 2 Cards first hit and takes bet from money
         for i in range(2):
             dlrCard()
             gC()
+        bet = int(betBox.get())
+        chips -= bet # Takes bet from chips at the start of round
+        monLbl.config(text=(f"'Chips': {chips}"))
     else: # Only gives 1 card after first hit
         gC()
   
@@ -121,6 +138,8 @@ def hit(): # Gives dealer and player 2 cards then 1 card to player
     if cT > 21: # If cards go over 21, end round
         hitBtn.config(state=tk.DISABLED)
         stand()
+    
+    
 
 def dealerPlay(): # Dealer draws cards after player stands
     global cT
@@ -163,12 +182,20 @@ def rstBlj(): # Resets game
     dTotalLbl.config(text="Dealer's Total:")
 
 def placeGame(): # Places Blackjack frame
+    global chips
+
     bljFrm.place(x=0, y=100, relwidth=1, relheight=1)
     startBtn.config(state=tk.DISABLED)
+    helpLbl.config(text='To win get as close to 21 without going over.')
+
+    chips = int(monBox.get())
+    monLbl.config(text=(f"'Chips': {chips}"))
+
 
 tLbl = tk.Label(menuFrm, text="'Blackjack Casino Sim!'", bg='#22552d', fg='White') # Title label
-helpLbl = tk.Label(menuFrm, text='To win get as close to 21 without going over.', bg='#22552d', fg='White') # Label explains rules
+helpLbl = tk.Label(menuFrm, text="To win get as close to 21 without going over.\nEnter 'Chips' below", bg='#22552d', fg='White') # Label explains rules
 startBtn = tk.Button(menuFrm, text='Start', bg='#22552d', activebackground='#0c3b16', fg='White', activeforeground='White', command=placeGame) # Button starts blackjack (or other games in the future)
+monBox = tk.Entry(menuFrm, bg='#0c3b16', fg='White') # Entry box for chips
 
 hitBtn = tk.Button(bljFrm, text='Hit', bg='#0c3b16', activebackground='#22552d', fg='White', activeforeground='#0c3b16', command=hit) # Hit button
 totalLbl = tk.Label(bljFrm, text='Total: 0', bg='#0c3b16', fg='White') # Label that displays card total
@@ -178,12 +205,16 @@ standBtn = tk.Button(bljFrm, text='Stand', bg='#0c3b16', activebackground='#2255
 rstBtn = tk.Button(bljFrm, text='Restart', bg='#0c3b16', activebackground='#22552d', fg='White', activeforeground='#0c3b16', command=rstBlj) # Restart Button
 dCardsLbl = tk.Label(bljFrm, text="Dealer's Cards:", bg='#0c3b16', fg='White') # Dealer's Cards
 dTotalLbl = tk.Label(bljFrm, text="Dealer's Total:", bg='#0c3b16', fg='White') # Dealer's Total
+betBox = tk.Entry(bljFrm, bg='#22552d', fg='White') # Bet entry box
+betLbl = tk.Label(bljFrm, text='Bet:', bg='#0c3b16', fg='White')
+monLbl = tk.Label(bljFrm, text="'Chips':", bg='#0c3b16', fg='White')
 
 # Label and button placements (Visuals are all temporary right now)
 menuFrm.place(x=0, y=0, relwidth=1, relheight=1)
 tLbl.place(x=150, y=20, anchor='c') 
 helpLbl.place(x=150, y=80, anchor='c')
 startBtn.place(x=150, y=50, anchor='c')
+monBox.place(x=150, y=110, anchor='c')
 
 hitBtn.place(x=20, y=120)
 totalLbl.place(x=170, y=30)
@@ -193,6 +224,9 @@ standBtn.place(x=50, y=120)
 rstBtn.place(x=95, y=120)
 dCardsLbl.place(x=20, y=60)
 dTotalLbl.place(x=20, y=90)
+betLbl.place(x=20, y=170)
+betBox.place(x=50, y=170)
+monLbl.place(x=140, y=170)
 
 mWin.mainloop()
 
@@ -200,13 +234,13 @@ mWin.mainloop()
 ''' 
 
 To do (feel free to add stuff):
-* Bet mechanic
-* Change bet in between rounds
+* Fix really bad bugs
+* Boot the player to menu if they run out of chips
 * Double down
 * Two hands
 * Multiplayer
 * 
-*
+* 
 * 
 
 Make it look good (important):
@@ -214,14 +248,21 @@ Make it look good (important):
 * Fix Placements
 * Fix frames and positions
 * Change colours
-*
-*
-*
+* 
+* 
+* 
 
 Bugs(If you find any put here):
+* (Really bad) If either boxes are empty it crashes
+* (Really bad) If a string is entered in boxes it crashes
+* You can bet more than what you have
+* You can go into the negatives with chips
+* If player and dealer have 21 player always wins (should be tie)
 * If you have an Ace and you hit, and go over 21, it wont turn to 1
-* You can get more than 4 of the same card
+* You can get more than 4 of the same card 
+* Dealer doesn't stop if it's close to busting (It will try it's hardest to beat the player at least)
 *
-*
+* 
+* 
 
 '''
