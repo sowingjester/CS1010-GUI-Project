@@ -14,7 +14,7 @@ import tkinter as tk
 from random import randint
 
 mWin = tk.Tk() # Main Window
-mWin.geometry('300x300') # Size of the screen might need to change
+mWin.geometry('600x400') # Size of the screen might need to change
 mWin.title("'Blackjack Casino Sim!'") # Needs a different title
 mWin.configure(bg='#243b5e') # theme not important rn, current colour temporary
 
@@ -44,7 +44,7 @@ def gC(): # gets 1 card and puts it into the cards list
     elif cFace == 'J' or cFace == 'Q' or cFace == 'K': # If its a face card it gives it the value 10
          cT += 10
     elif cFace == 'A': # Ace can be 1 or 11 (currently doesnt work properly)
-        if cT < 11:
+        if cT + 11 <= 21:
             cT += 11
         else:
             cT += 1
@@ -62,7 +62,7 @@ def dlrCard(): # Gives dealer 1 card and puts in hand
     elif cFace == 'J' or cFace == 'Q' or cFace == 'K':
         dT += 10
     elif cFace == 'A':
-        if dT < 11:
+        if dT + 11 <= 21:
             dT += 11
         else:
             dT += 1
@@ -211,10 +211,10 @@ monLbl = tk.Label(bljFrm, text="'Chips':", bg='#0c3b16', fg='White')
 
 # Label and button placements (Visuals are all temporary right now)
 menuFrm.place(x=0, y=0, relwidth=1, relheight=1)
-tLbl.place(x=150, y=20, anchor='c') 
-helpLbl.place(x=150, y=80, anchor='c')
-startBtn.place(x=150, y=50, anchor='c')
-monBox.place(x=150, y=110, anchor='c')
+tLbl.place(x=300, y=20, anchor='c') 
+helpLbl.place(x=300, y=80, anchor='c')
+startBtn.place(x=300, y=50, anchor='c')
+monBox.place(x=300, y=110, anchor='c'
 
 hitBtn.place(x=20, y=120)
 totalLbl.place(x=170, y=30)
