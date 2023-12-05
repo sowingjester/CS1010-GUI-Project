@@ -165,6 +165,7 @@ def hit(): # Gives dealer and player 2 cards then 1 card to player
     while cT > 21: # If cards go over 21, end round
         if (cards.count('A') >= 1) and (cards.index('A') == 1 or cards.index('A') == 2): # If you get an ace in your first hit it will turn that ace into 1 
             cT -= 10
+            totalLbl.config(text=(f'Total: {cT}'))
         if cT > 21:
             hitBtn.config(state=tk.DISABLED)
             stand()
