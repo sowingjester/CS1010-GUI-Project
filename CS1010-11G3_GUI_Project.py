@@ -14,7 +14,7 @@ import tkinter as tk
 from random import randint
 
 mWin = tk.Tk() # Main Window
-mWin.geometry('600x400') # Size of the screen might need to change
+mWin.geometry('600x500') # Size of the screen might need to change
 mWin.title("'Blackjack Casino Sim!'") # Needs a different title
 mWin.configure(bg='#243b5e') # theme not important rn, current colour temporary
 
@@ -25,19 +25,26 @@ cardList = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'] # List of all 
 
 cT = 0 # total of cards added up
 cards = [] # Player's Hand
+numCards = 0 # Number of cards in players hand
 
 dCards = [] # Dealer's Hand
 dT = 0 # Dealer's Total
+numDlr = 0 # Number of cards the dealer has
 
 chips = tk.IntVar # Total money player put in
 
+cImgX = 250
+cImgY = 10
+
 def gC(): # gets 1 card and puts it into the cards list
-    global cards
-    global cT
+    global cards, cT, cImgY
+    cImgY = 25
 
     cNum = randint(0, 12) # Card number value
     cFace = cardList[cNum] # gets face from list
     cards += [cFace] # Adds new cards to list
+
+    placeImage(cNum)
 
     if cFace.isnumeric(): # If its a number card it just uses that value
         cT += int(cFace)
@@ -48,6 +55,54 @@ def gC(): # gets 1 card and puts it into the cards list
             cT += 11
         else:
             cT += 1
+
+def placeImage(cNum): # Places card images on screen
+    global cImgX, cImgY, numCards
+    
+    cImgX = 300 + (50*numCards)
+    numCards += 1
+    cImgY = 10
+
+    cImg = ['Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King']
+
+    image_path = f"Assets/{cImg[cNum]}.png"
+
+    # Create a PhotoImage object directly
+    tk_img = tk.PhotoImage(file=image_path)
+
+    width, height = 100, 150
+    tk_img = tk_img.subsample(int(tk_img.width() / width), int(tk_img.height() / height))
+
+    # Create a Label widget to display the image
+    img_label = tk.Label(bljFrm, image=tk_img, bg='#0c3b16')
+    img_label.image = tk_img  # Keep a reference to the image to prevent it from being garbage collected
+
+    # Place the image label on the frame
+    img_label.place(x=cImgX, y=cImgY)
+
+def dlrImage(cNum): # Places dealers cards
+    global cImgX, cImgY, numDlr
+
+    cImgX = 300 + (50*numDlr)
+    numDlr += 1
+    cImgY = 200
+
+    cImg = ['Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King']
+
+    image_path = f"Assets/{cImg[cNum]}.png"
+
+    # Create a PhotoImage object directly
+    tk_img = tk.PhotoImage(file=image_path)
+
+    width, height = 100, 150
+    tk_img = tk_img.subsample(int(tk_img.width() / width), int(tk_img.height() / height))
+
+    # Create a Label widget to display the image
+    img_label = tk.Label(bljFrm, image=tk_img, bg='#0c3b16')
+    img_label.image = tk_img  # Keep a reference to the image to prevent it from being garbage collected
+
+    # Place the image label on the frame
+    img_label.place(x=cImgX, y=cImgY)
 
 def chipC(): # Fixes the bug where you need to enter a number in the chips box
     global chips
@@ -77,12 +132,13 @@ def getBet(): # Fixes the bet needing to be more than the minimum
         betLbl.config(text='Invalid')
 
 def dlrCard(): # Gives dealer 1 card and puts in hand
-    global dCards
-    global dT
+    global dCards, dT
 
     cNum = randint(0, 12)
     cFace = cardList[cNum]
     dCards += [cFace] # Adds cards to dealer's hand
+
+    dlrImage(cNum)
 
     if cFace.isnumeric():
         dT += int(cFace)
@@ -95,10 +151,7 @@ def dlrCard(): # Gives dealer 1 card and puts in hand
             dT += 1
 
 def stand(): # Ends Round
-    global cT
-    global dT
-    global bet
-    global chips
+    global cT, dT, bet, chips
 
     dealerPlay()
     if cT > 21: # If the cards add up to more than 21 you lose
@@ -157,11 +210,7 @@ def hit(): # Gives dealer and player 2 cards then 1 card to player
         monLbl.config(text=(f"'Chips': {chips}"))
     else: # Only gives 1 card after first hit
         gC()
-  
-    cardLbl.config(text=(f"Cards: {cards}")) # Displays cards (currently ugly)
-    totalLbl.config(text=f'Total: {cT}')   # Displays cards added up total
-    dCardsLbl.config(text=(f"Dealer's Cards: ['{dCards[0]}', '*']"))
-
+    
     while cT > 21: # If cards go over 21, end round
         if (cards.count('A') >= 1) and (cards.index('A') == 1 or cards.index('A') == 2): # If you get an ace in your first hit it will turn that ace into 1 
             cT -= 10
@@ -170,11 +219,15 @@ def hit(): # Gives dealer and player 2 cards then 1 card to player
             hitBtn.config(state=tk.DISABLED)
             stand()
             break
+    
+    cardLbl.config(text=(f"Cards: {cards}")) # Displays cards (currently ugly)
+    totalLbl.config(text=f'Total: {cT}')   # Displays cards added up total
+    dCardsLbl.config(text=(f"Dealer's Cards: ['{dCards[0]}', '*']"))
+
+   
 
 def dealerPlay(): # Dealer draws cards after player stands
-    global cT
-    global dT
-    global dCards
+    global cT, dT, dCards
 
     while cT > dT: # If you have more than the dealer it'll try to get more than you
         if cT >= 21:
@@ -193,16 +246,15 @@ def dealerPlay(): # Dealer draws cards after player stands
             break
 
 def rstBlj(): # Resets game
-    global cT
-    global cards
-    global dCards
-    global dT
+    global cT, cards, dCards, dT, cImgX, numCards, numDlr
 
     cT = 0
     cards = []
-
+    cImgX = 250
     dCards = []
     dT = 0
+    numCards = 0
+    numDlr = 0
 
     totalLbl.config(text='Total:')
     cardLbl.config(text='Cards:')
