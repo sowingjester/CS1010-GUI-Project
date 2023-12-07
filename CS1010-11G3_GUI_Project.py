@@ -13,8 +13,9 @@ Group Members:
 import tkinter as tk
 from random import randint
 
+
 mWin = tk.Tk() # Main Window
-mWin.geometry('600x500') # Size of the screen might need to change
+mWin.geometry('750x600') # Size of the screen might need to change
 mWin.title("'Blackjack Casino Sim!'") # Needs a different title
 mWin.configure(bg='#243b5e') # theme not important rn, current colour temporary
 
@@ -35,6 +36,40 @@ chips = tk.IntVar # Total money player put in
 
 cImgX = 250
 cImgY = 10
+
+
+def center_window(window, width, height):
+    screen_width = window.winfo_screenwidth()
+    screen_height = window.winfo_screenheight()
+
+    x = (screen_width - width) // 2
+    y = (screen_height - height) // 2
+
+    window.geometry(f'{width}x{height}+{x}+{y}')
+
+
+def center_content(window):
+    content_width = window.winfo_reqwidth()
+    content_height = window.winfo_reqheight()
+
+    screen_width = window.winfo_screenwidth()
+    screen_height = window.winfo_screenheight()
+
+    x = (screen_width - content_width) // 2
+    y = (screen_height - content_height) // 2
+
+    # Update the position of the frames and widgets
+    menuFrm.place(x=0, y=0, relwidth=1, relheight=1)
+    tLbl.place(x=window.winfo_width() // 2, y=20, anchor='c')
+    helpLbl.place(x=window.winfo_width() // 2, y=80, anchor='c')
+    startBtn.place(x=window.winfo_width() // 2, y=120, anchor='c')
+    monBox.place(x=window.winfo_width() // 2 + 50, y=50, anchor='c')
+    enterBtn.place(x=window.winfo_width() // 2 - 100, y=50, anchor='c')
+    chipLbl.place(x=window.winfo_width() // 2 - 50, y=50, anchor='c')
+
+    
+
+    
 
 def gC(): # gets 1 card and puts it into the cards list
     global cards, cT, cImgY
@@ -110,7 +145,7 @@ def chipC(): # Fixes the bug where you need to enter a number in the chips box
     try:
         if ((monBox.get()).isnumeric):
             chips = int(monBox.get())
-            chipLbl.config(text="'Chips' -->")
+            chipLbl.config(text="Chips -->")
             startBtn.config(state=tk.NORMAL)
     except ValueError:
         startBtn.config(state=tk.DISABLED)
@@ -157,14 +192,14 @@ def stand(): # Ends Round
     if cT > 21: # If the cards add up to more than 21 you lose
         totalLbl.config(text='Bust!')
         cardLbl.config(text=(f'Cards: {cards}'))
-        winLbl.config(text='You Lost.')
+        winLbl.config(text='You Lost.', font=('Helvetica', 12, 'bold'),)
         hitBtn.config(state=tk.DISABLED)
         dCardsLbl.config(text=(f"Dealer's Cards: {dCards}"))
         dTotalLbl.config(text=(f"Dealer's Total: {dT}"))    
     elif dT == 0: # If the dealer busted you win
         totalLbl.config(text=(f'Total: {cT}'))
         cardLbl.config(text=(f'Cards: {cards}'))
-        winLbl.config(text='You Win!')
+        winLbl.config(text='You Win!', font=('Helvetica', 12, 'bold'))
         hitBtn.config(state=tk.DISABLED)
         dTotalLbl.config(text="Dealer's Total: Bust!")
         chips += bet*2
@@ -172,7 +207,7 @@ def stand(): # Ends Round
     elif cT < dT: # If the dealer has more you lose
         totalLbl.config(text=(f'Total: {cT}'))
         cardLbl.config(text=(f'Cards: {cards}'))
-        winLbl.config(text='You Lost.')
+        winLbl.config(text='You Lost.', font=('Helvetica', 12, 'bold'))
         hitBtn.config(state=tk.DISABLED)
         dCardsLbl.config(text=(f"Dealer's Cards: {dCards}"))
         dTotalLbl.config(text=(f"Dealer's Total: {dT}"))
@@ -183,15 +218,15 @@ def stand(): # Ends Round
         dTotalLbl.config(text=(f"Dealer's Total: {dT}"))
         hitBtn.config(state=tk.DISABLED)
         if cT == 21: # If the cards add up to 21 its a win
-            winLbl.config(text='You Win!')
+            winLbl.config(text='You Win!', font=('Helvetica', 12, 'bold'))
             chips += bet*2
-            monLbl.config(text=(f"'Chips': {chips}"))
+            monLbl.config(text=(f"Chips: {chips}"))
         elif cT > dT: # If your card's are more than the dealer you win
-            winLbl.config(text='You Win!')
+            winLbl.config(text='You Win!',font=('Helvetica', 12, 'bold'))
             chips += bet*2
             monLbl.config(text=(f"'Chips': {chips}"))
         elif cT == dT:
-            winLbl.config(text="It's a tie!")
+            winLbl.config(text="It's a tie!", font=('Helvetica', 12, 'bold'))
             chips += bet
             monLbl.config(text=(f"'Chips': {chips}"))
 
@@ -248,6 +283,15 @@ def dealerPlay(): # Dealer draws cards after player stands
 def rstBlj(): # Resets game
     global cT, cards, dCards, dT, cImgX, numCards, numDlr
 
+    for widget in bljFrm.winfo_children():
+        if isinstance(widget, tk.Label) and widget.winfo_y() == 10:
+            widget.destroy()
+
+    # Destroy the image labels for dealer's cards
+    for widget in bljFrm.winfo_children():
+        if isinstance(widget, tk.Label) and widget.winfo_y() == 200:
+            widget.destroy()
+    
     cT = 0
     cards = []
     cImgX = 250
@@ -273,28 +317,30 @@ def placeGame(): # Places Blackjack frame
     monLbl.config(text=(f"'Chips': {chips}"))
 
 
-tLbl = tk.Label(menuFrm, text="'Blackjack Casino Sim!'", bg='#22552d', fg='White') # Title label
-helpLbl = tk.Label(menuFrm, text="To win get as close to 21 without going over.", bg='#22552d', fg='White') # Label explains rules
+tLbl = tk.Label(menuFrm, text="Blackjack Casino Sim!",font=('Helvetica', 14, 'bold'), bg='#22552d', fg='White') # Title label
+helpLbl = tk.Label(menuFrm, text="To win get as close to 21 without going over.",font=('Helvetica', 12, 'bold'), bg='#22552d', fg='White') # Label explains rules
 startBtn = tk.Button(menuFrm, text='Start', bg='#22552d', activebackground='#0c3b16', fg='White', activeforeground='White', command=placeGame) # Button starts blackjack (or other games in the future)
 monBox = tk.Entry(menuFrm, bg='#0c3b16', fg='White') # Entry box for chips
 enterBtn = tk.Button(menuFrm, text='Enter', bg='#22552d', activebackground='#0c3b16', fg='White', activeforeground='White', command=chipC)
-chipLbl = tk.Label(menuFrm, text="'Chips' -->", bg='#22552d', fg='White')
+chipLbl = tk.Label(menuFrm, text="Chips -->",font=('Helvetica',10 , 'bold'), bg='#22552d', fg='White')
 
 startBtn.config(state=tk.DISABLED)
 
 hitBtn = tk.Button(bljFrm, text='Hit', bg='#0c3b16', activebackground='#22552d', fg='White', activeforeground='#0c3b16', command=hit) # Hit button
-totalLbl = tk.Label(bljFrm, text='Total: 0', bg='#0c3b16', fg='White') # Label that displays card total
-cardLbl = tk.Label(bljFrm, text='Cards:', bg='#0c3b16', fg='White') # Displays cards
+totalLbl = tk.Label(bljFrm, text='Total: 0',font=('Helvetica', 12, 'bold'), bg='#0c3b16', fg='White') # Label that displays card total
+cardLbl = tk.Label(bljFrm, text='Cards:',font=('Helvetica', 12, 'bold'), bg='#0c3b16', fg='White') # Displays cards
 winLbl = tk.Label(bljFrm, text='', bg='#0c3b16', fg='White') # Win/Lose Label
 standBtn = tk.Button(bljFrm, text='Stand', bg='#0c3b16', activebackground='#22552d', fg='White', activeforeground='#0c3b16', command=stand) # Stand Button
 rstBtn = tk.Button(bljFrm, text='Restart', bg='#0c3b16', activebackground='#22552d', fg='White', activeforeground='#0c3b16', command=rstBlj) # Restart Button
-dCardsLbl = tk.Label(bljFrm, text="Dealer's Cards:", bg='#0c3b16', fg='White') # Dealer's Cards
-dTotalLbl = tk.Label(bljFrm, text="Dealer's Total:", bg='#0c3b16', fg='White') # Dealer's Total
+dCardsLbl = tk.Label(bljFrm, text="Dealer's Cards:", font=('Helvetica', 12, 'bold'), bg='#0c3b16', fg='White') # Dealer's Cards
+dTotalLbl = tk.Label(bljFrm, text="Dealer's Total:",  font=('Helvetica', 12, 'bold'), bg='#0c3b16', fg='White') # Dealer's Total
 betBox = tk.Entry(bljFrm, bg='#22552d', fg='White') # Bet entry box
-betLbl = tk.Label(bljFrm, text='Bet:', bg='#0c3b16', fg='White')
-monLbl = tk.Label(bljFrm, text="'Chips':", bg='#0c3b16', fg='White')
+betLbl = tk.Label(bljFrm, text='Bet:',font=('Helvetica', 11, 'bold'), bg='#0c3b16', fg='White')
+monLbl = tk.Label(bljFrm, text="Chips:",font=('Helvetica', 12, 'bold'), bg='#0c3b16', fg='White')
 betBtn = tk.Button(bljFrm, text='Enter Bet', bg='#0c3b16', activebackground='#22552d', fg='White', activeforeground='#0c3b16', command=getBet)
-betRul = tk.Label(bljFrm, text='Min Bet 10c', bg='#0c3b16', fg='White')
+betRul = tk.Label(bljFrm, text='Min Bet 10chips',font=('Helvetica', 8, 'bold'), bg='#0c3b16', fg='White')
+dlrLabel = tk.Label(bljFrm, text="DEALER'S HAND", font=('Helvetica', 14, 'bold'),  bg='#0c3b16', fg='White')
+plyrLabel = tk.Label(bljFrm, text="PLAYER'S HAND", font=('Helvetica', 14, 'bold'),  bg='#0c3b16', fg='White')
 
 hitBtn.config(state=tk.DISABLED)
 
@@ -308,48 +354,27 @@ enterBtn.place(x=200, y=50, anchor='c')
 chipLbl.place(x=250, y=50, anchor='c')
 
 hitBtn.place(x=20, y=120)
-totalLbl.place(x=170, y=30)
+totalLbl.place(x=205, y=30)
 cardLbl.place(x=20, y=30)
 winLbl.place(x=70, y=0)
 standBtn.place(x=50, y=120)
 rstBtn.place(x=95, y=120)
 dCardsLbl.place(x=20, y=60)
 dTotalLbl.place(x=20, y=90)
-betLbl.place(x=20, y=170)
+betLbl.place(x=15, y=170)
 betBox.place(x=50, y=170)
 monLbl.place(x=140, y=170)
 betBtn.place(x=150, y=200)
 betRul.place(x=50, y=200)
+dlrLabel.place(x=350, y=370)
+plyrLabel.place(x=350, y=175)
+
+center_window(mWin, 600, 500)
+center_content(mWin)
+
+# Bind the function to window resize event
+mWin.bind('<Configure>', lambda event: center_content(mWin))
+
+
 
 mWin.mainloop()
-
-
-''' 
-
-To do (feel free to add stuff):
-* Boot the player to menu if they run out of chips
-* Double down
-* Two hands
-* Multiplayer
-* 
-* 
-* 
-
-Make it look good (important):
-* Change the title
-* Fix Placements
-* Fix frames and positions
-* Change colours
-* 
-* 
-* 
-
-Bugs(If you find any put here):
-* If player and dealer have 21 player always wins (should be tie)
-* You can get more than 4 of the same card 
-* Dealer doesn't stop if it's close to busting (It will try it's hardest to beat the player at least)
-*
-* 
-* 
-
-'''
