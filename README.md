@@ -38,15 +38,6 @@ To do (feel free to add stuff):
 * 
 * 
 
-Make it look good (important):
-* Change the title
-* Fix Placements
-* Fix frames and positions
-* Change colours
-* 
-* 
-* 
-
 Bugs(If you find any put here):
 * If you stand before hitting first you win instantly
 * If player and dealer have 21 player always wins (should be tie)
