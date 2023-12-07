@@ -29,6 +29,8 @@ Kenai Lozada: GUI designer and Documenter
 Connor Moy: GUI designer and Core programmer
 
 
+
+
 To do (feel free to add stuff):
 * Boot the player to menu if they run out of chips
 * Double down
