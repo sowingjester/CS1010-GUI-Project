@@ -1,7 +1,5 @@
 CS1010-GUI-Project
 
-Feel free to add anything
-
 1. What is your project about - Game, application, etc.
 
 Our project is a game that depicts the game of Black Jack. Allowing you to set certain amounts of "money" to bet and play the game. 
@@ -29,3 +27,31 @@ Alan Garrido: GUI designer and Documenter
 Kenai Lozada: GUI designer and Documenter
 
 Connor Moy: GUI designer and Core programmer
+
+
+To do (feel free to add stuff):
+* Boot the player to menu if they run out of chips
+* Double down
+* Two hands
+* Multiplayer
+* 
+* 
+* 
+
+Make it look good (important):
+* Change the title
+* Fix Placements
+* Fix frames and positions
+* Change colours
+* 
+* 
+* 
+
+Bugs(If you find any put here):
+* If you stand before hitting first you win instantly
+* If player and dealer have 21 player always wins (should be tie)
+* You can get more than 4 of the same card 
+* Dealer doesn't stop if it's close to busting (It will try it's hardest to beat the player at least)
+*
+* 
+* 
