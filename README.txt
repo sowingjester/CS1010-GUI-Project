@@ -1,4 +1,6 @@
+
 CS1010-GUI-Project Section 11 group 3
+
 
 Who in your team will be doing what? GUI designer, Documentation, leadership, Core programming, etc:
 
@@ -11,20 +13,25 @@ Who in your team will be doing what? GUI designer, Documentation, leadership, Co
  Connor Moy: GUI designer and Core programmer
 
 
-How to install our game:
+FAQs:
 
+Q: Can't run it correctly?
+A: How to install our game:
    1. Download our zip file
    2. Extract the zip file
    3. Then open the python file in the folder in you Python Idle
 
 
-What is your project about - Game, application, etc. Our project is a game that depicts the game of Black Jack. Allowing you to set certain amounts of to chips to bet with and play the game. You're game will end once you ran out of chips, but it will continue as long as you have chips to play with.
-
-Who can play your game or use your application. Casual or beginner players of black jack can play our game as it can be a good start to learn,with more lenient rules.
-
+Q: What is your project about? - Game, application, etc? 
+A: Our project is a game that depicts the game of Black Jack. Allowing you to set certain amounts of to chips to bet with and play the game. You're game will end once you ran out of chips, but it will continue as long as you have chips to play with.
 
 
-How will your game be played? Steps to step on how to play:
+Q: Who can play your game or use your application?
+A: Casual or beginner players of black jack can play our game as it can be a good start to learn,with more lenient rules.
+
+
+Q: How will your game be played? 
+A: Steps to step on how to play:
 
   1. You will first put in how many chips you will play with (minimum of 10), in the game then confirm it with the enter button and press the start button to get to the next window.
 
@@ -41,15 +48,7 @@ How will your game be played? Steps to step on how to play:
   7. Then you can press the reset button to play again and repeat through steps 2-6 until you fall below 10 chips which signifies a loss or you exceed 1 million chips.
 
 
-
-
-To do (feel free to add stuff):
-* Double down
-* Two hands
-* Multiplayer
-* 
-* 
-* 
+Bug Reports/features:
 
 Bugs(If you find any put here):
 * If you stand before hitting first you win instantly (Infinite money glitch)
@@ -59,3 +58,13 @@ Bugs(If you find any put here):
 *
 * 
 * 
+
+Add features:
+* Double down
+* Two hands
+* Multiplayer
+* 
+* 
+* 
+
+
