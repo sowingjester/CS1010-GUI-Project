@@ -1,0 +1,18 @@
+
+rulesText = (
+    "Rules of Blackjack:\n"
+    "1. The goal is to get as close to 21 points without going over.\n"
+    "2. Number cards are worth the number they show. Jack, Queen, and King are worth 10 points.\n"
+    "3. Aces are worth 11 points.\n"
+    "4. You and the dealer start off with two cards.\n"
+    "5. You can 'Hit' to get another card or 'Stand' to keep your current total.\n"
+    "6. If your total goes over 21, you bust and lose the game.\n"
+    "7. The dealer will draw cards until they have at least 17 points.\n"
+    "8. If the dealer busts or your total is higher than the dealer's, you win.\n"
+    "9. If your total is equal to the dealer's, it's a tie.\n"
+)
+rulesLbl = tk.Label(bljFrm, text=rulesText, font=('Helvetica', 10), bg='#0c3b16', fg='White')
+rulesLbl.place(x=10, y=240)
+
+
+
